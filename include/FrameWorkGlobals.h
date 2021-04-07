@@ -19,4 +19,5 @@
 #define GLOBAL_FRAMEWORK(type_var, initial_value) extern type_var
 #endif
 
-GLOBAL_FRAMEWORK(bool g_framework_global_test, true);
+GLOBAL_FRAMEWORK(std::unique_ptr<CassServer> g_cass_server, nullptr);
+GLOBAL_FRAMEWORK(std::string g_cassandra_ip, "127.0.0.1");

@@ -12,6 +12,8 @@
 
 #include <nlohmann/json.hpp>
 
+#include "CassServer.h"
+
 namespace FrameWork {
 bool CheckFrameWorkBuild();
 }

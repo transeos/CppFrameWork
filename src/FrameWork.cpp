@@ -20,14 +20,18 @@ using std::endl;
 namespace FrameWork {
 bool CheckFrameWorkBuild() {
   try {
+    // json
     json j_obj;
     j_obj["pi"] = 3.1416;
     cout << j_obj << endl;
+
+    // Cassandra
+    g_cass_server.reset(new CassServer("testframework"));
   } catch (...) {
     cout << "Exception in CheckFrameWorkBuild" << endl;
     return false;
   }
 
-  return g_framework_global_test;
+  return true;
 }
 } // namespace FrameWork
