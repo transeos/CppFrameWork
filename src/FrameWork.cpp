@@ -16,6 +16,7 @@ using nlohmann::json;
 
 using std::cout;
 using std::endl;
+using std::string;
 
 namespace FrameWork {
 bool CheckFrameWorkBuild() {
@@ -34,4 +35,24 @@ bool CheckFrameWorkBuild() {
 
   return true;
 }
+
+void PrintTcpMsg(Node* nd, string msg) {
+  cout << nd->ip <<" : " << msg << std::endl;
+}
+
+bool CheckFrameWorkTcp(const int32_t port) {
+  tcp::server tcp_server(port);
+
+  tcp_server.OnMessage(PrintTcpMsg);
+
+  int32_t result = tcp_server.Listen();
+
+  if (result != 0) {
+    cout << "Faild to start server !" << endl;
+    return false;
+  }
+
+  return true;
+}
+
 } // namespace FrameWork

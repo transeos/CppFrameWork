@@ -29,8 +29,14 @@ git clone --recursive git@github.com:transeos/CppFrameWork.git
 # or update submodules (inside 'CppFrameWork' repository)
 git submodule update --init --recursive
 
+## build tcp socket
+cd 3rdparty/socket.cpp/build
+make
+cd ../dist
+ln -s libsocket.cpp.so.0.0.1 libsocket.cpp.so
+
 ## build cassandra
-cd $APP_DIR/3rdparty/cpp-driver
+cd 3rdparty/cpp-driver
 mkdir build
 cd build
 cmake ../ -DCMAKE_INSTALL_PREFIX=$(pwd)

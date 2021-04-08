@@ -8,3 +8,6 @@
 [submodule "3rdparty/cpp-driver"]
 	path = 3rdparty/cpp-driver
 	url = https://github.com/datastax/cpp-driver
+[submodule "3rdparty/socket.cpp"]
+	path = 3rdparty/socket.cpp
+	url = https://github.com/samehkamaleldin/socket.cpp

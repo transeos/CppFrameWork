@@ -11,9 +11,14 @@
 #include <bits/stdc++.h>
 
 #include <nlohmann/json.hpp>
+#include <tcp/tcp_server.hpp>
 
 #include "CassServer.h"
 
 namespace FrameWork {
 bool CheckFrameWorkBuild();
+
+void PrintTcpMsg(Node* nd, std::string msg);
+
+bool CheckFrameWorkTcp(const int32_t port);
 }

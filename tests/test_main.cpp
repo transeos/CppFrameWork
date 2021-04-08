@@ -29,3 +29,11 @@ TEST_CASE("CheckBuild", "[basic]") {
 
   cout << "init test end" << endl;
 }
+
+TEST_CASE("TcpServer", "[basic]") {
+
+  cout << "Tcp server test start" << endl;
+  cout << "=====================" << endl;
+
+  FrameWork::CheckFrameWorkTcp(11002);
+}
