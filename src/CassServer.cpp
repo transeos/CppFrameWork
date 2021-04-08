@@ -23,12 +23,12 @@ CassServer::CassServer(const std::string& key_space_name) :
   const char* cass_ip = getenv("CASSANDRA_IP");
   g_cassandra_ip = (cass_ip ? cass_ip : "127.0.0.1");
 
-  createCluster(g_cassandra_ip.c_str(), CASS_PORT);
+  CreateCluster(g_cassandra_ip.c_str(), CASS_PORT);
 
   // setting request time out to 10 min (default: 2 sec) to handle large requests
   cass_cluster_set_request_timeout(cluster_, 600000);
 
-  if (connectSession() != CASS_OK) {
+  if (ConnectSession() != CASS_OK) {
     cass_cluster_free(cluster_);
     cluster_ = nullptr;
 
@@ -42,7 +42,7 @@ CassServer::CassServer(const std::string& key_space_name) :
   std::string key_space_query = "CREATE KEYSPACE IF NOT EXISTS " + key_space_;
   key_space_query = key_space_query + " WITH replication = { 'class': 'SimpleStrategy', 'replication_factor': '1' };";
 
-  executeQuery(key_space_query.c_str());
+  ExecuteQuery(key_space_query.c_str());
 }
 
 CassServer::~CassServer() {
@@ -56,32 +56,38 @@ CassServer::~CassServer() {
   }
 }
 
-void CassServer::printError(CassFuture* future) {
+bool CassServer::IsConnected() const {
+  return (cluster_ != nullptr);
+}
+
+void CassServer::PrintError(CassFuture* future) {
   const char* message = nullptr;
   size_t message_length;
   cass_future_error_message(future, &message, &message_length);
   cout << "[Warning]Cass_Error: " << message << endl;
 }
 
-void CassServer::createCluster(const char* hosts, const int32_t port) {
+void CassServer::CreateCluster(const char* hosts, const int32_t port) {
   cluster_ = cass_cluster_new();
   cass_cluster_set_contact_points(cluster_, hosts);
   cass_cluster_set_port(cluster_, port);
 }
 
-CassError CassServer::connectSession() {
+CassError CassServer::ConnectSession() {
   CassFuture* future = cass_session_connect(session_, cluster_);
   cass_future_wait(future);
 
   CassError rc = cass_future_error_code(future);
-  if (rc != CASS_OK) printError(future);
+  if (rc != CASS_OK) PrintError(future);
 
   cass_future_free(future);
   return rc;
 }
 
-CassError CassServer::executeQuery(const char* query, const bool verbose) {
-  // COUT<<"cql_query = " << query << endl;
+CassError CassServer::ExecuteQuery(const char* query, const bool verbose) {
+  if (verbose) {
+   cout << "cql_query = " << query << endl;
+  }
 
   CassStatement* statement = cass_statement_new(query, 0);
 
@@ -90,7 +96,7 @@ CassError CassServer::executeQuery(const char* query, const bool verbose) {
 
   CassError rc = cass_future_error_code(future);
   if (rc != CASS_OK) {
-    if (verbose) printError(future);
+    if (verbose) PrintError(future);
   }
 
   cass_future_free(future);

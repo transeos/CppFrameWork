@@ -17,8 +17,11 @@ class CassServer {
   CassServer(const std::string& key_space_name);
   ~CassServer();
 
-  CassError executeQuery(const char* query, const bool verbose = true);
-  void printError(CassFuture* future);
+  bool IsConnected() const;
+
+  CassError ExecuteQuery(const char* query, const bool verbose = false);
+
+  void PrintError(CassFuture* future);
 
  private:
   // key space name
@@ -27,6 +30,6 @@ class CassServer {
   CassSession* session_;
   CassCluster* cluster_;
 
-  void createCluster(const char* hosts, const int32_t port);
-  CassError connectSession();
+  void CreateCluster(const char* hosts, const int32_t port);
+  CassError ConnectSession();
 };

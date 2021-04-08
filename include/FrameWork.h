@@ -15,10 +15,19 @@
 
 #include "CassServer.h"
 
+using nlohmann::json;
+
 namespace FrameWork {
 bool CheckFrameWorkBuild();
 
+bool CheckFrameWorkTcp(const int32_t port);
+
+// utils
+bool ConnectToCassadraDb(const std::string& key_space);
+
+CassError ExecuteQuery(const char* query, const bool verbose = false);
+
 void PrintTcpMsg(Node* nd, std::string msg);
 
-bool CheckFrameWorkTcp(const int32_t port);
+void LaunchTcpServer(const int32_t port, decltype(PrintTcpMsg) clientMsgCallBack);
 }
